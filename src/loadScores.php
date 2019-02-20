@@ -5,14 +5,14 @@
 	// Require modules
 	require_once( 'Constants.class.php');
 	
-	$connect = mysql_connect(Constants::DB_HOST, Constants::DB_USER, Constants::DB_PASSWORD);
-	mysql_select_db("hallaby_duckdee");
+	$connect = mysqli_connect(Constants::DB_HOST, Constants::DB_USER, Constants::DB_PASSWORD);
+	mysqli_select_db($connect,"hallaby_duckdee");
 	
 	$str = "SELECT * FROM high_scores ORDER BY score DESC, score_date DESC";
-	$query = mysql_query($str);
+	$query = mysqli_query($connect,$str);
 	
 	$i = 1;
-	while($rows = mysql_fetch_array($query)):
+	while($rows = mysqli_fetch_array($query)):
 		
 		$username = $rows['username'];
 		$score = $rows['score'];
@@ -34,10 +34,10 @@
 	}
 	
 	$weeklyStr = "SELECT * FROM high_scores WHERE score_date > DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY score DESC, score_date DESC";
-	$weeklyQuery = mysql_query($weeklyStr);
+	$weeklyQuery = mysqli_query($connect,$weeklyStr);
 	
 	$i = 1;
-	while($rows = mysql_fetch_array($weeklyQuery)):
+	while($rows = mysqli_fetch_array($weeklyQuery)):
 		
 		$username = $rows['username'];
 		$score = $rows['score'];
@@ -58,5 +58,5 @@
 		$i++;
 	}
 	
-	mysql_close();
+	mysqli_close($connect);
 ?>
